@@ -1,0 +1,4 @@
+required-views: assets/views/splash, assets/views/default
+splash-view: splashscreen
+default-view: homescreen
+fullscreen: false

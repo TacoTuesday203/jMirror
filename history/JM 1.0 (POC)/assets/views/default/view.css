@@ -1,0 +1,45 @@
+body {
+    background-color: black;
+}
+
+.content {
+    -webkit-animation: fadein 3s;
+    animation: fadein 3s;
+}
+
+.footer {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    -webkit-transform: translate(0, -100%);
+    transform: translate(0, -100%);
+    width: 100%;
+    border-top: 1px solid white;
+}
+
+.app-launcher {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
+    background-color: white;
+    height: 75%;
+    width: 100px;
+}
+
+@-webkit-keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.title {
+    font-family: 'Courier New', Courier, monospace; 
+    color: white;
+    font-size: 12px;
+}

@@ -1,0 +1,4 @@
+splash-view: assets/views/splash
+default-view: assets/views/default
+required-views: assets/views/test
+fullscreen: false
