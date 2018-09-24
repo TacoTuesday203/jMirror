@@ -1,9 +1,6 @@
 #include <iostream>
 #include <map>
 
-#include <WebCore.h>
-#include <STLHelpers.h>
-
 #include "util.h"
 
 #include <jconfig.h>
@@ -26,7 +23,7 @@ struct ViewConf {
 
 class View {
     public:
-        void init(ViewConf config, Awesomium::WebCore* core, Awesomium::WebView* view);
+        void init(ViewConf config);
         void makeActive();
 
         std::string getName() {return m_name;}
@@ -37,11 +34,6 @@ class View {
 
         ViewType m_type;
         unsigned int m_sDuration;
-
-        Awesomium::WebURL m_url;
-
-        Awesomium::WebCore* m_core;
-        Awesomium::WebView* m_view;
 };
 
 class ViewLoader {

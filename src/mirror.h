@@ -1,12 +1,6 @@
 #include <iostream>
 #include <SDL.h>
 
-//#include "method_dispatcher.h"
-
-#include <WebCore.h>
-#include <STLHelpers.h>
-#include <BitmapSurface.h>
-
 #include "util.h"
 #include "view.h"
 #include "timer.h"
@@ -31,13 +25,6 @@ class MainMirror {
     private:
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
-        SDL_Texture* m_webTexture;
-
-        Awesomium::WebCore* m_core;
-        Awesomium::WebView* m_view;
-        Awesomium::BitmapSurface* m_webSurface;
-
-        //MethodDispatcher m_dispatcher;
 
         std::map<std::string, View> m_views;
 
@@ -45,6 +32,4 @@ class MainMirror {
         std::string m_mvName;
 
         MirrorState m_state;
-
-        //void onLaunchView(Awesomium::WebView* caller, const Awesomium::JSArray& args);
 };

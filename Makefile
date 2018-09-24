@@ -5,11 +5,11 @@ CC = g++
 CFLAGS = -Wall -g
 
 #includes
-INCLUDES = -I/usr/include/Awesomium -I/usr/include/SDL2 -I/usr/include/jconfig
+INCLUDES = -I/usr/include/SDL2 -I/usr/include/jconfig -I/usr/include/cef -I/usr/include/cef/include
 
 #libraries
-LIBS = -lSDL2 -lawesomium-1-7 -ljconfig
-#LFLAGS = -Ldependencies/bin/libawesomium-1-7.so 
+LIBS = /usr/lib/cef/libcef_dll_wrapper.a -lcef -lEGL -lGLESv2 -lSDL2 -ljconfig
+#LFLAGS = 
 
 #sources
 SRCS = src/main.cpp src/startup.cpp src/util.cpp src/mirror.cpp src/view.cpp src/timer.cpp

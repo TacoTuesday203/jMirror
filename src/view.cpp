@@ -3,18 +3,18 @@
 jconfig::ConfigFile ViewLoader::m_viewConfig;
 bool ViewLoader::m_init = false;
 
-void View::init(ViewConf config, Awesomium::WebCore* core, Awesomium::WebView* view) {
+void View::init(ViewConf config) {
     if (config.fail) {
         return;
     }
 
-    m_core = core;
-    m_view = view;
+    //m_core = core;
+    //m_view = view;
 
     m_name = config.m_name;
     m_type = config.m_type;
     std::string url = "file:///" + Util::workingDir() + "/" + config.m_hPath;
-    m_url = Awesomium::WebURL(Awesomium::WSLit(url.c_str()));
+    //m_url = Awesomium::WebURL(Awesomium::WSLit(url.c_str()));
     if (m_type == ViewType::SPLASH_VIEW) {
         m_sDuration = config.m_sDuration;
     } else {
@@ -23,14 +23,7 @@ void View::init(ViewConf config, Awesomium::WebCore* core, Awesomium::WebView* v
 }
 
 void View::makeActive() {
-    m_view->LoadURL(m_url);
 
-    while(m_view->IsLoading()) {
-        m_core->Update();
-    }
-
-    Util::sleepms(300);
-    m_core->Update();
 }
 
 ViewConf ViewLoader::loadView(std::string path) {

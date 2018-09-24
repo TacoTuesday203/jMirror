@@ -24,12 +24,9 @@ void MainMirror::init(std::string splashView, std::string mainView, bool lfs, st
         return;
     }
 
-    m_core = Awesomium::WebCore::Initialize(Awesomium::WebConfig());
-    m_view = m_core->CreateWebView(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
     for (int i = 0; i < requiredViews.size(); i++) {
         View v;
-        v.init(ViewLoader::loadView(requiredViews[i]), m_core, m_view);
+        v.init(ViewLoader::loadView(requiredViews[i]));
         if (v.getName() != "") {
             m_views.insert(std::make_pair(v.getName(), v));
         } else {
@@ -56,10 +53,7 @@ void MainMirror::init(std::string splashView, std::string mainView, bool lfs, st
 
     m_views[m_svName].makeActive();
 
-    m_webSurface = (Awesomium::BitmapSurface*)m_view->surface();
-
     SDL_SetRenderDrawColor(m_renderer, 0xFF, 0xFF, 0, 0xFF);
-    m_webTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
     std::cout << "[jm] Mirror is ready." << std::endl;
 
@@ -83,8 +77,6 @@ void MainMirror::loop() {
                 m_views[m_mvName].makeActive();
             }
         }
-        m_core->Update();
-        m_view->Focus();
         draw();
         processInput();
     }
@@ -99,17 +91,16 @@ void MainMirror::loop() {
 
 void MainMirror::draw() {
 
-    if (m_webSurface != NULL) {
+    /*if (m_webSurface != NULL) {
         unsigned char* pixels = nullptr;
         int pitch = 0;
         
         SDL_LockTexture(m_webTexture, nullptr, (void**)&pixels, &pitch);
         m_webSurface->CopyTo(pixels, pitch, 4, true, false);
         SDL_UnlockTexture(m_webTexture);
-    }
+    }*/
 
     SDL_RenderClear(m_renderer);
-    SDL_RenderCopy(m_renderer, m_webTexture, NULL, NULL);
     SDL_RenderPresent(m_renderer);
 }
 
@@ -132,7 +123,6 @@ void MainMirror::processInput() {
 
 void MainMirror::shutdown() {
     std::cout << "[jm] Shutting down..." << std::endl;
-    Awesomium::WebCore::Shutdown();
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
