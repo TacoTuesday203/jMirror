@@ -1,8 +1,6 @@
 #ifndef _KEYBOARD_UTILS_H_
 #define _KEYBOARD_UTILS_H_
 
-#include <SDL.h>
-
 int getKeyboardModifiers(uint16_t const mod)
 {
     int result = EVENTFLAG_NONE;

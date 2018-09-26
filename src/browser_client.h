@@ -46,7 +46,6 @@ class BrowserClient : public CefClient, public CefLifeSpanHandler, public CefLoa
         void OnBeforeClose(CefRefPtr<CefBrowser> browser) {}
 
         void OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode) {
-            std::cout << "HTTP CODE: " << httpStatusCode << std::endl;
             m_loaded = true;
         }
 

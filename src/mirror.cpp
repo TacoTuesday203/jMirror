@@ -12,7 +12,7 @@ void MainMirror::init(std::string splashView, std::string mainView, bool lfs, st
         std::cout << "[jm] Critical: unable to create SDL window." << std::endl;
         return;
     }
-    
+
     if (lfs) {
         SDL_SetWindowFullscreen(m_window, 1);
     }
@@ -23,6 +23,23 @@ void MainMirror::init(std::string splashView, std::string mainView, bool lfs, st
         std::cout << "[jm] Critical: could not create render engine." << std::endl;
         return;
     }
+
+    // BEGIN CEF INIT
+
+    //CefRefPtr<RenderHandler> renderHandler = new RenderHandler(m_renderer, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    m_renderHandler = new RenderHandler(m_renderer, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+    CefWindowInfo windowInfo;
+    CefBrowserSettings browserSettings;
+
+    windowInfo.SetAsWindowless(NULL);
+
+    //CefRefPtr<BrowserClient> browserClient = new BrowserClient(renderHandler);
+    m_browserClient = new BrowserClient(m_renderHandler);
+    //CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(windowInfo, browserClient.get(), "http://www.google.com", browserSettings, nullptr);
+    m_browser = CefBrowserHost::CreateBrowserSync(windowInfo, m_browserClient.get(), "http://www.google.com", browserSettings, nullptr);   
+
+    // END CEF INIT
 
     for (int i = 0; i < requiredViews.size(); i++) {
         View v;
@@ -77,30 +94,22 @@ void MainMirror::loop() {
                 m_views[m_mvName].makeActive();
             }
         }
+        CefDoMessageLoopWork();
+
         draw();
         processInput();
-    }
-    while (m_state == MirrorState::SLEEPING) {
-        std::cout << "[jm] Error" << std::endl; 
     }
     if (m_state == MirrorState::SHUTDOWN) {
         return;
     }
-    loop();
+    while (m_state == MirrorState::SLEEPING) {
+        std::cout << "[jm] Error" << std::endl; 
+    }
 }
 
 void MainMirror::draw() {
-
-    /*if (m_webSurface != NULL) {
-        unsigned char* pixels = nullptr;
-        int pitch = 0;
-        
-        SDL_LockTexture(m_webTexture, nullptr, (void**)&pixels, &pitch);
-        m_webSurface->CopyTo(pixels, pitch, 4, true, false);
-        SDL_UnlockTexture(m_webTexture);
-    }*/
-
     SDL_RenderClear(m_renderer);
+    m_renderHandler->render();
     SDL_RenderPresent(m_renderer);
 }
 
@@ -123,9 +132,18 @@ void MainMirror::processInput() {
 
 void MainMirror::shutdown() {
     std::cout << "[jm] Shutting down..." << std::endl;
+
+    m_renderHandler = nullptr;
+    m_browserClient = nullptr;
+    m_browser = nullptr;
+
+    CefShutdown();
+
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
-    m_state = MirrorState::SHUTDOWN;
+
     std::cout << "[jm] Goodbye!" << std::endl;
+
+    m_state = MirrorState::SHUTDOWN;
 }
