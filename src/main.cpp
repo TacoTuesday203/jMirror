@@ -11,12 +11,7 @@
 
 #include "startup.h"
 
-std::vector<std::string> ValidOptions = {"-c"};
-std::string configFile = "";
-
-void processOption(std::string option, std::string parameter);
 void start();
-
 int initCEF(int argc, char** argv);
 
 int main(int argc, char** argv) {
@@ -31,7 +26,7 @@ int main(int argc, char** argv) {
 
 void start() {
     std::cout << "[jm] Attempting to load config..." << std::endl;
-    ConfigLoader::findConfig("assets/mirror-config");
+    ConfigLoader::findConfig("../assets/mirror-config");
 }
 
 int initCEF(int argc, char** argv) {
@@ -46,11 +41,14 @@ int initCEF(int argc, char** argv) {
     CefSettings settings;
 
     // CEF settings
-    std::ostringstream ss;
-    ss << SDL_GetBasePath() << "locales/";
+    std::ostringstream ss_locales;
+    ss_locales << SDL_GetBasePath() << "cef/locales/";
 
-    CefString(&settings.locales_dir_path) = ss.str();
-    CefString(&settings.resources_dir_path) = SDL_GetBasePath();
+    std::ostringstream ss_resources;
+    ss_resources << SDL_GetBasePath() << "cef/";
+
+    CefString(&settings.locales_dir_path) = ss_locales.str();
+    CefString(&settings.resources_dir_path) = ss_resources.str();
     settings.log_severity = LOGSEVERITY_DISABLE; // disable console log outputs
 
     // Initialize CEF

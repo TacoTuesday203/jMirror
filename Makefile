@@ -18,7 +18,7 @@ SRCS = src/main.cpp src/startup.cpp src/util.cpp src/mirror.cpp src/view.cpp src
 OBJS = $(SRCS:.c=.o)
 
 #executable
-MAIN = jmirror
+MAIN = bin/jmirror
 
 #main build routine
 
