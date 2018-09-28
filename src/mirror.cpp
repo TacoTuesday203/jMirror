@@ -137,11 +137,11 @@ void MainMirror::shutdown() {
     m_browserClient = nullptr;
     m_browser = nullptr;
 
-    CefShutdown();
-
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
+
+    CefShutdown();
 
     std::cout << "[jm] Goodbye!" << std::endl;
 
