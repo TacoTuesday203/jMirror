@@ -8,13 +8,11 @@ void View::init(ViewConf config) {
         return;
     }
 
-    //m_core = core;
-    //m_view = view;
-
     m_name = config.m_name;
     m_type = config.m_type;
-    std::string url = "file:///" + Util::workingDir() + "/" + config.m_hPath;
-    //m_url = Awesomium::WebURL(Awesomium::WSLit(url.c_str()));
+
+    m_url = "mirror://res/" + config.m_hPath;
+
     if (m_type == ViewType::SPLASH_VIEW) {
         m_sDuration = config.m_sDuration;
     } else {
@@ -22,8 +20,8 @@ void View::init(ViewConf config) {
     }
 }
 
-void View::makeActive() {
-
+void View::makeActive(CefRefPtr<CefBrowser> browser) {
+    browser->GetMainFrame()->LoadURL(m_url);
 }
 
 ViewConf ViewLoader::loadView(std::string path) {

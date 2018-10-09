@@ -1,3 +1,5 @@
+#include <chrono>
+#include <ratio>
 #include <ctime>
 #include <iostream>
 
@@ -10,7 +12,7 @@ class Timer {
             bool isRunning() {return m_running;}
             void reset();
         private:
-            clock_t m_clock;
+            std::chrono::time_point<std::chrono::system_clock> m_clock;
             unsigned int m_time;
             bool m_running = false;
             bool m_finished = false;

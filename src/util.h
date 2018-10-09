@@ -8,6 +8,15 @@
 #include <fstream>
 #include <unistd.h>
 #include <limits.h>
+#include <stdio.h>
+#include <string.h>
+
+#include <cef_app.h>
+#include <cef_client.h>
+#include <cef_render_handler.h>
+#include <cef_life_span_handler.h>
+#include <cef_load_handler.h>
+#include <wrapper/cef_helpers.h>
 
 namespace Util {
     extern std::string removeSpaces(std::string str);
@@ -15,4 +24,7 @@ namespace Util {
     extern void sleepms(int ms);
     extern bool fileExists(std::string path);
     extern std::string workingDir();
+    extern std::string DumpRequestContents(CefRefPtr<CefRequest> request);
+    extern size_t find_nth(std::string str, int pos, char what);
+    extern bool fileToString(std::string path, std::string* data);
 }

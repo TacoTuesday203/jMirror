@@ -12,11 +12,11 @@ body {
 
 .title {
     font-family: 'Courier New', Courier, monospace; 
-    color: rgb(128, 209, 236);
+    color: white;
     font-size: 36px;
 }
 
 .loading {
-    width: 100px;
-    height: 100px;
+    width: 225px;
+    height: 150px;
 }

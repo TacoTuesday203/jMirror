@@ -1,5 +1,6 @@
+#pragma once
+
 #include <iostream>
-#include <SDL.h>
 
 #include <cef_app.h>
 #include <cef_client.h>
@@ -8,9 +9,10 @@
 #include <cef_load_handler.h>
 #include <wrapper/cef_helpers.h>
 
+#include <SDL.h>
+
 #include "render_handle.h"
 #include "browser_client.h"
-//#include "sdl_keyboard_utils.h"
 
 #include "util.h"
 #include "view.h"
@@ -47,4 +49,6 @@ class MainMirror {
         std::string m_mvName;
 
         MirrorState m_state;
+
+        CefBrowserHost::MouseButtonType translateMouseButton(SDL_MouseButtonEvent const &e);
 };

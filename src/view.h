@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <cef_client.h>
 
 #include "util.h"
 
@@ -24,13 +25,14 @@ struct ViewConf {
 class View {
     public:
         void init(ViewConf config);
-        void makeActive();
+        void makeActive(CefRefPtr<CefBrowser> browser);
 
         std::string getName() {return m_name;}
         ViewType getType() {return m_type;}
         unsigned int getsDuration() {return m_sDuration;}
     private:
         std::string m_name = "";
+        std::string m_url = "";
 
         ViewType m_type;
         unsigned int m_sDuration;

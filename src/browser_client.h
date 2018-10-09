@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include "scheme_factory.h"
+
 class BrowserClient : public CefClient, public CefLifeSpanHandler, public CefLoadHandler {
     public:
         BrowserClient(CefRefPtr<CefRenderHandler> ptr) :
@@ -65,6 +67,7 @@ class BrowserClient : public CefClient, public CefLifeSpanHandler, public CefLoa
         bool isLoaded() const {
             return m_loaded;
         }
+
     private:
         int m_browserID;
 

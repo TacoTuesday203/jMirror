@@ -1,15 +1,29 @@
 <html>
     <head>
         <link rel="stylesheet" href="view.css">
+
+        <script>
+            setInterval(updateTime, 500);
+
+            function updateTime() {
+                var dt = new Date();
+                document.getElementById("time-text").innerHTML = dt.toLocaleTimeString();
+            }
+        </script>
     </head>
     <body>
         <div class="content">
             <span class="title">jmirror version 1.0</span>
-            <div class="footer">
-                <a class="weatherwidget-io" href="https://forecast7.com/en/37d34n121d89/san-jose/" data-label_1="SAN JOSE" data-label_2="WEATHER" data-basecolor="#000000" data-accent="#000000" data-textcolor="#FFFFFF" data-highcolor="#FFFFFF" data-lowcolor="#FFFFFF" data-suncolor="#FFFFFF" data-mooncolor="#FFFFFF" data-cloudcolor="#FFFFFF" data-cloudfill="#FFFFFF" data-raincolor="#FFFFFF" data-snowcolor="#FFFFFF" >SAN JOSE WEATHER</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+            <div class="header">
+                <div class="time">
+                    <h1 id="time-text">12:00 AM</h1>
+                </div>
+                <div class="weather">
+                    <script type='text/javascript' src='https://darksky.net/widget/small/37.3362,-121.8906/us12/en.js?width=100%&height=200&title=san jose&textColor=ffffff&bgColor=000000&transparency=true&skyColor=ffffff&fontFamily=Default&customFont=&units=us'></script>
+                </div>
             </div>
-            <div class="app-launcher">
-                <a href="#" onClick="jmirror.view('test')">Test</a>
+            <div class="music-player">
+                <iframe src="http://localhost/music_player/music_player.html" width="350" height="75" frameborder="0"></iframe>
             </div>
         </div>
     </body>

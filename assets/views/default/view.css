@@ -7,14 +7,23 @@ body {
     animation: fadein 3s;
 }
 
-.footer {
+.time {
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 36px;
+}
+
+.weather {
     position: absolute;
-    top: 100%;
-    left: 0;
-    -webkit-transform: translate(0, -100%);
-    transform: translate(0, -100%);
-    width: 100%;
-    border-top: 1px solid white;
+    top: 0;
+    left: -60px;
+    padding-top: 20px;
+}
+
+.header {
+    position: relative;
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 .app-launcher {
@@ -23,7 +32,7 @@ body {
     left: 100%;
     -webkit-transform: translate(-100%, 0);
     transform: translate(-100%, 0);
-    background-color: white;
+    background-color: black;
     height: 75%;
     width: 100px;
 }
@@ -39,7 +48,20 @@ body {
 }
 
 .title {
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-100%, -100%);
     font-family: 'Courier New', Courier, monospace; 
     color: white;
     font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.music-player {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translate(0, -100%);
 }

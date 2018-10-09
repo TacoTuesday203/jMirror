@@ -1,4 +1,4 @@
 view-name: splashscreen
 view-type: splash
 view-html: view.html
-splash-duration: 1500
+splash-duration: 3000

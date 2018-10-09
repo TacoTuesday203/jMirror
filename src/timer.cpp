@@ -6,13 +6,13 @@ void Timer::setTime(int ms) {
 
 void Timer::begin() {
     m_running = true;
-    m_clock = clock();
+    m_clock = std::chrono::system_clock::now();
 }
 
 void Timer::update() {
+    std::chrono::time_point<std::chrono::system_clock> time_now = std::chrono::system_clock::now();
     if (!(m_finished) && m_running) {
-        //std::cout << (clock() - m_clock) / (CLOCKS_PER_SEC / 1000)<< std::endl;
-        if ((clock() - m_clock) / (CLOCKS_PER_SEC / 1000) > m_time) {
+        if (abs(std::chrono::duration_cast<std::chrono::milliseconds>(m_clock - time_now).count()) > m_time) {
             m_finished = true;
         }
     }

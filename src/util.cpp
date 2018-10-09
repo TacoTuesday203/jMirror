@@ -26,4 +26,46 @@ namespace Util {
         getcwd(cwd, sizeof(cwd));
         return std::string(cwd);
     }
+    std::string DumpRequestContents(CefRefPtr<CefRequest> request) {
+        std::stringstream ss;
+
+        ss << "URL: " << std::string(request->GetURL());
+        ss << "\nMethod: " << std::string(request->GetMethod());
+
+        CefRequest::HeaderMap headerMap;
+        request->GetHeaderMap(headerMap);
+        if (headerMap.size() > 0) {
+            ss << "\nHeaders:";
+            CefRequest::HeaderMap::const_iterator it = headerMap.begin();
+            for (; it != headerMap.end(); ++it) {
+                ss << "\n\t" << std::string((*it).first) << ": " << std::string((*it).second);
+            }
+        }
+        return ss.str();
+    }
+    size_t find_nth(std::string str, int pos, char what) {
+        int o = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str[i] == what) {
+                o++;
+            }
+            if (o == pos) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    bool fileToString(std::string path, std::string* data) {
+        std::ifstream file(path);
+        if (!file.is_open()) {
+            return false;
+        }
+
+        std::string line;
+        while(std::getline(file, line)) {
+            data->append(line);
+        }
+
+        return true;
+    }
 }
