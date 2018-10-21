@@ -84,9 +84,16 @@ void MainMirror::loop() {
     Timer splash_timer;
     splash_timer.setTime(m_views[m_svName].getsDuration());
 
+    Timer fps_timer;
+    fps_timer.setTime(1000);
+    fps_timer.begin();
+
     bool splash_running = true;
 
     while(m_state == MirrorState::RUNNING) {
+        m_fpsCounter.begin();
+        fps_timer.update();
+
         if (splash_running) {
             if (!splash_timer.isRunning()) {
                 splash_timer.begin();
@@ -101,6 +108,13 @@ void MainMirror::loop() {
 
         draw();
         processInput();
+
+        m_fpsCounter.end();
+        if (fps_timer.isFinished()) {
+            fps_timer.reset();
+            fps_timer.begin();
+            std::cout << m_fpsCounter.getFPS() << std::endl;
+        }
     }
     if (m_state == MirrorState::SHUTDOWN) {
         return;
@@ -133,6 +147,8 @@ CefBrowserHost::MouseButtonType MainMirror::translateMouseButton(SDL_MouseButton
     }
     return result;
 }
+
+bool fs = false;
 
 void MainMirror::processInput() {
     SDL_Event evnt;

@@ -17,6 +17,7 @@
 #include "util.h"
 #include "view.h"
 #include "timer.h"
+#include "fps_counter.h"
 
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 768
@@ -38,6 +39,8 @@ class MainMirror {
     private:
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
+
+        FPSCounter m_fpsCounter;
 
         CefRefPtr<RenderHandler> m_renderHandler = nullptr;
         CefRefPtr<BrowserClient> m_browserClient = nullptr;
