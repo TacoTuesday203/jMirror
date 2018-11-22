@@ -2,7 +2,7 @@
 CC = g++
 
 #compile flags
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -pthread
 
 #includes
 INCLUDES = -I/usr/include/SDL2 -I/usr/include/jconfig -I/usr/include/cef -I/usr/include/cef/include
@@ -12,7 +12,7 @@ LIBS = /usr/lib/cef/libcef_dll_wrapper.a -lcef -lEGL -lGLESv2 -lSDL2 -ljconfig
 #LFLAGS = 
 
 #sources
-SRCS = src/main.cpp src/startup.cpp src/util.cpp src/mirror.cpp src/view.cpp src/timer.cpp src/image_loaders.cpp src/fps_counter.cpp
+SRCS = src/main.cpp src/startup.cpp src/util.cpp src/mirror.cpp src/view.cpp src/timer.cpp src/image_loaders.cpp src/fps_counter.cpp src/webservice.cpp
 
 #C object files
 OBJS = $(SRCS:.c=.o)

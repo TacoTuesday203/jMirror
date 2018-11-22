@@ -39,6 +39,9 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "cstdarg": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "hash_map": "cpp",
+        "cstddef": "cpp",
+        "list": "cpp"
     }
 }

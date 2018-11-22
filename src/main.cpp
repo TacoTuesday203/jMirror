@@ -25,8 +25,50 @@ int main(int argc, char** argv) {
 }
 
 void start() {
-    std::cout << "[jm] Attempting to load config..." << std::endl;
-    ConfigLoader::findConfig("../assets/mirror-config");
+    std::vector<std::string> folders;
+    folders.push_back("plugins");                         // Plugins folder (additional services)
+    folders.push_back("../assets");                       // Assets folder
+    folders.push_back("../assets/web-modules");           // WebModules folder
+
+    std::vector<std::string> files;
+    files.push_back("plugins/webservice");                // WebService
+    files.push_back("../assets/web-config");              // WebService config
+    files.push_back("../assets/web-modules/error.html");  // WebService error page
+    files.push_back("../assets/web-modules/index.html");  // WebService index page (required)
+    files.push_back("../assets/mirror-config");           // Mirror config file
+
+    LayoutCheck::init(files, folders);
+
+    std::cout << "[jm] Ensuring layout..." << std::endl;
+    if (!LayoutCheck::check()) {
+        std::cout << "[jm] Error ensuring layout. An important file/folder may be missing." << std::endl;
+        return;
+    }
+
+    std::cout << "[jm] Attempting to load configs..." << std::endl;
+
+    MirrorArgs margs;
+    if (!ConfigLoader::findConfig("../assets/mirror-config", &margs)) {
+        std::cout << "[jm] Failed while loading mirror config file." << std::endl;
+        return;
+    }
+    
+    WebServiceArgs wargs;
+    if (!WebServiceLoader::findConfig("../assets/web-config", &wargs)) {
+        std::cout << "[jm] Failed while loading web config file." << std::endl;
+        std::cout << "[jm] Continuing without starting WebService." << std::endl;
+    } else {
+        WebServiceLoader::start(wargs);
+    }
+
+    MainMirror m;
+    m.init(margs);
+
+    WebServiceLoader::stop();
+    
+    CefShutdown();
+
+    std::cout << "[jm] Goodbye!" << std::endl;
 }
 
 int initCEF(int argc, char** argv) {

@@ -18,6 +18,7 @@
 #include "view.h"
 #include "timer.h"
 #include "fps_counter.h"
+#include "webservice.h"
 
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 768
@@ -26,9 +27,26 @@ enum class MirrorState {
     RUNNING, SLEEPING, SHUTDOWN
 };
 
+struct MirrorArgs {
+    MirrorArgs() {}
+    MirrorArgs(std::string sv, std::string mv, bool fs, std::vector<std::string> rv) {
+        m_splashView = sv;
+        m_mainView = mv;
+        m_fullscreen = fs;
+        m_requiredViews = rv;
+    }
+
+    std::string m_splashView;
+    std::string m_mainView;
+    
+    bool m_fullscreen;
+
+    std::vector<std::string> m_requiredViews;
+};
+
 class MainMirror {
     public:
-        void init(std::string splashView, std::string mainView, bool lfs, std::vector<std::string> requiredViews);
+        void init(MirrorArgs args);
         //void bindMethods();
 
         void loop();

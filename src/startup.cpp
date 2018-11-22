@@ -1,19 +1,52 @@
 #include "startup.h"
 
+std::vector<std::string> LayoutCheck::m_files;
+std::vector<std::string> LayoutCheck::m_folders;
+bool LayoutCheck::m_init = false;
+
+void LayoutCheck::init(std::vector<std::string> files, std::vector<std::string> folders) {
+    m_files = files;
+    m_folders = folders;
+    m_init = true;
+}
+
+bool LayoutCheck::check() {
+    if (m_files.size() == 0 && m_folders.size() == 0) {
+        return true;
+    }
+    for (int j = 0; j < m_folders.size(); j++) {
+        if (!Util::folderExists(m_folders[j])) {
+            return false;
+        }
+    }
+    for (int i = 0; i < m_files.size(); i++) {
+        if (!Util::fileExists(m_files[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 jconfig::ConfigFile ConfigLoader::m_mainConfig;
 
 std::string ConfigLoader::m_configPath;
 //std::map<std::string, jconfig::Variable> ConfigLoader::m_cVars;
 
-void ConfigLoader::findConfig(std::string path) {
+bool ConfigLoader::findConfig(std::string path, MirrorArgs* args) {
     initConfig();
     // check for config file
     if (!Util::fileExists(path)) {
         std::cout << "[jm] Unable to find config file \"" + path + "\"" << std::endl;
     } else {
         m_configPath = path;
-        processConfig();
+        MirrorArgs a;
+        if (!processConfig(&a)) {
+            return false;
+        }
+        *args = a;
+        return true;
     }
+    return false;
 }
 
 void ConfigLoader::initConfig() {
@@ -39,7 +72,7 @@ void ConfigLoader::initConfig() {
 
 // tomorrow, the great big rewrite of this mess begins
 
-void ConfigLoader::processConfig() {
+bool ConfigLoader::processConfig(MirrorArgs* args) {
     std::string splashv;
     std::string defaultv;
     bool lfs;
@@ -50,12 +83,12 @@ void ConfigLoader::processConfig() {
     jconfig::Error e = m_mainConfig.process(m_configPath, result);
     if (e.error != jconfig::ErrorType::NONE) {
         std::cout << jconfig::getErrorMessage(e) << std::endl;
-        return;
+        return false;
     }
 
     if (!m_mainConfig.allDefined(result)) {
         std::cout << "[jc] Please make sure all required variables are defined. (" + m_configPath + ")" << std::endl;
-        return;
+        return false;
     }
 
     splashv = result["splash-view"].data;
@@ -63,8 +96,6 @@ void ConfigLoader::processConfig() {
     m_mainConfig.formatList(result["required-views"].data, views);
     lfs = result["fullscreen"].data == "true" ? true : false;
 
-    std::cout << "[jm] Starting mirror process..." << std::endl;
-
-    MainMirror m;
-    m.init(splashv, defaultv, lfs, views);
+    *args = MirrorArgs(splashv, defaultv, lfs, views);
+    return true;
 }

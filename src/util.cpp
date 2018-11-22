@@ -21,6 +21,19 @@ namespace Util {
         std::ifstream f(path);
         return f.good();
     }
+    bool folderExists(std::string path) {
+        std::string fp = workingDir() + "/" + path;
+
+        struct stat info;
+
+        if (stat(fp.c_str(), &info) != 0) {
+            return false;
+        } else if (info.st_mode & S_IFDIR) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     std::string workingDir() {
         char cwd[PATH_MAX];
         getcwd(cwd, sizeof(cwd));

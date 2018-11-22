@@ -2,7 +2,12 @@
 
 #include "sdl_keyboard_utils.h"
 
-void MainMirror::init(std::string splashView, std::string mainView, bool lfs, std::vector<std::string> requiredViews) {        
+void MainMirror::init(MirrorArgs args) { 
+    std::string splashView = args.m_splashView;
+    std::string mainView = args.m_mainView;
+    bool lfs = args.m_fullscreen;
+    std::vector<std::string> requiredViews = args.m_requiredViews;
+
     m_state = MirrorState::RUNNING;
     if (SDL_Init(SDL_INIT_EVERYTHING < 0)) {
         std::cout << "[jm] Critical: unable to start SDL." << std::endl;
@@ -84,15 +89,15 @@ void MainMirror::loop() {
     Timer splash_timer;
     splash_timer.setTime(m_views[m_svName].getsDuration());
 
-    Timer fps_timer;
+    /*Timer fps_timer;
     fps_timer.setTime(1000);
-    fps_timer.begin();
+    fps_timer.begin();*/
 
     bool splash_running = true;
 
     while(m_state == MirrorState::RUNNING) {
         m_fpsCounter.begin();
-        fps_timer.update();
+        //fps_timer.update();
 
         if (splash_running) {
             if (!splash_timer.isRunning()) {
@@ -109,12 +114,12 @@ void MainMirror::loop() {
         draw();
         processInput();
 
-        m_fpsCounter.end();
+        /*m_fpsCounter.end();
         if (fps_timer.isFinished()) {
             fps_timer.reset();
             fps_timer.begin();
-            std::cout << m_fpsCounter.getFPS() << std::endl;
-        }
+            std::cout << "[jm] FPS -> " << m_fpsCounter.getFPS() << std::endl;
+        }*/
     }
     if (m_state == MirrorState::SHUTDOWN) {
         return;
@@ -282,9 +287,7 @@ void MainMirror::shutdown() {
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 
-    CefShutdown();
-
-    std::cout << "[jm] Goodbye!" << std::endl;
+    std::cout << "[jm] Mirror process stopped." << std::endl;
 
     m_state = MirrorState::SHUTDOWN;
 }
