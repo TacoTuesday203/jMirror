@@ -1,0 +1,4 @@
+view-name: splashscreen
+view-type: splash
+view-html: view.html
+splash-duration: 3000

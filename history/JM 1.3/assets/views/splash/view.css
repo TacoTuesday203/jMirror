@@ -1,0 +1,22 @@
+body {
+    background-color: black;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.title {
+    font-family: 'Courier New', Courier, monospace; 
+    color: white;
+    font-size: 36px;
+}
+
+.loading {
+    width: 225px;
+    height: 150px;
+}

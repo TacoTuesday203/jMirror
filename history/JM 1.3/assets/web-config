@@ -1,0 +1,4 @@
+root-dir: web-modules
+index-page: index.html
+missing-page: error.html
+port: 8008
