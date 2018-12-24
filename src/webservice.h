@@ -3,7 +3,8 @@
 #include <string>
 #include <map>
 #include <stdio.h>
-#include <thread>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "util.h"
 
@@ -24,10 +25,12 @@ class WebServiceLoader {
     private:
         static void initConfig();
 
-        static void startWebService(WebServiceArgs args);
+        //static void startWebService(WebServiceArgs args);
 
-        static std::thread m_wsThread;
-        static bool m_closeWebService;
+        /*static std::thread m_wsThread;
+        static bool m_closeWebService;*/
+        
+        static FILE* m_handle;
 
         static jconfig::ConfigFile m_mainConfig;
         static std::string m_configPath;

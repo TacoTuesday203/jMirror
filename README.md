@@ -15,21 +15,8 @@ jMirror is a free, open source piece of software for you to run on your smart mi
 
 # Installation
 
-In order to build jMirror out of the box, ensure the following folders and files exist:
-
-| Library | Path |
-| ------- | ---- |
-| CEF | /usr/lib/cef/libcef_dll_wrapper.a |
-| CEF | /usr/include/cef/(CEF Includes) |
-| SDL2 | /usr/lib/x86_65-linux-gnu/libSDL2.so |
-| SDL2 | /usr/include/SDL2/(SDL Includes) |
-| jConfig | /usr/lib/jconfig.so |
-| jConfig | /usr/include/jconfig/(jConfig Includes) |
-
-Then, simply run the following command in the same directory as the Makefile:
+More detailed installation instructions coming soon. Run the following once appropriate folders and files exist:
 
 ```sh
 $ sudo make all
 ```
-
-If everything is set up correctly, a jMirror excecutable should be built in the *bin* folder.

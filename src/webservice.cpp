@@ -4,8 +4,10 @@
 jconfig::ConfigFile WebServiceLoader::m_mainConfig;
 std::string WebServiceLoader::m_configPath;
 
-std::thread WebServiceLoader::m_wsThread;
-bool WebServiceLoader::m_closeWebService = false;
+FILE* WebServiceLoader::m_handle;
+
+/*std::thread WebServiceLoader::m_wsThread;
+bool WebServiceLoader::m_closeWebService = false;*/
 
 bool WebServiceLoader::findConfig(std::string path, WebServiceArgs* args) {
     initConfig();
@@ -60,34 +62,20 @@ bool WebServiceLoader::processConfig(WebServiceArgs* args) {
 }
 
 void WebServiceLoader::start(WebServiceArgs args) {
-    m_wsThread = std::thread(startWebService, args);
+    std::cout << "[jm] Starting WebService..." << std::endl;
+
+    std::string frootDir = "../assets/" + args.m_rootDir;
+    std::string call = "./plugins/webservice --root-dir " + frootDir + " --index-page " + args.m_indexPage + " --missing-page " + args.m_missingPage + " --port " + args.m_port;
+
+    popen(call.c_str(), "r");
 }
 
 void WebServiceLoader::stop() {
-    std::cout << "[jm] Stopping WebService..." << std::endl;
-    m_closeWebService = true;
-    m_wsThread.join();
-}
+    std::cout << "[jm] Sending stop signal to WebService..." << std::endl;
 
-void WebServiceLoader::startWebService(WebServiceArgs args) {
-    std::string frootDir = "../assets/" + args.m_rootDir;
-    std::string call = "./plugins/webservice --root-dir " + frootDir + " --index-page " + args.m_indexPage + " --missing-page " + args.m_missingPage + " --port " + args.m_port;
-    FILE *handle = popen(call.c_str(), "r");
-
-    if (handle == NULL) {
-        std::cout << "[jm] Failed to start WebService." << std::endl;
-        return;
-    }
-
-    std::cout << "[jm] WebService is running." << std::endl;
-
-    char buf[64];
-    size_t readn;
-
-    while(!m_closeWebService);
-
-    std::cout << "[jm] WebService was terminated." << std::endl;
-    pclose(handle);
+    std::ofstream f("STOP");
+    f.close();
+    remove("STOP");
 }
 
 void WebServiceLoader::initConfig() {

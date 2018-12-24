@@ -65,7 +65,7 @@ void start() {
     m.init(margs);
 
     WebServiceLoader::stop();
-    
+
     CefShutdown();
 
     std::cout << "[jm] Goodbye!" << std::endl;

@@ -1,0 +1,134 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="music_player.css">
+    </head>
+    <body>
+        <div id="player"></div>
+
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script>
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+
+            var scriptTag = document.getElementsByTagName('script')[0];
+            scriptTag.parentNode.insertBefore(tag, scriptTag);
+            
+            var player;
+
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    height: '390',
+                    width: '640',
+                    videoId: '',
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
+
+            function onPlayerReady(event) {
+                event.target.playVideo();
+            }
+
+            var done = false;
+            function onPlayerStateChange(event) {
+                if (event.data != YT.PlayerState.PLAYING && !done) {
+                    setInterval(updateTime, 100);
+                    done = true;
+                }
+            }
+            
+            function playPause() {
+                if(player.getPlayerState() == 1) {
+                    pauseVideo();
+                } else {
+                    playVideo();
+                }
+            }
+            
+            function playVideo() {
+                player.playVideo();
+                document.getElementById("play-pause-button").innerHTML = "<img src=\"img/pause.png\" class=\"play-pause-image\"/>";
+
+            }
+            
+            function pauseVideo() {
+                player.pauseVideo();
+                document.getElementById("play-pause-button").innerHTML = "<img src=\"img/play.png\" class=\"play-pause-image\"/>";
+            }
+
+            function stopVideo() {
+                player.stopVideo();
+            }
+
+            var getJSON = function(url, callback) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.responseType = 'json';
+                xhr.onload = function() {
+                    var status = xhr.status;
+                    if (status === 200) {
+                        callback(null, xhr.response);
+                    } else {
+                        callback(status, xhr.response);
+                    }
+                };
+                xhr.send();
+            };
+
+            function setVideo() {
+                var searchQuery = encodeURIComponent(document.getElementById("video").value);
+                getJSON('https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + searchQuery + '&key=AIzaSyDfiQ2B3LGXoW38ylhDfwUvV1_wOgjOv7g', function(err, data) {
+                    if (err === null) {
+                        player.loadVideoById(data.items[0].id.videoId, 0, "small");
+                        playVideo();
+                    }
+                });
+            }
+
+            function updateTime() {
+                var totalDur = player.getDuration();
+                var currentDur = player.getCurrentTime();
+                
+                var totalMinutes = Math.floor(totalDur / 60);
+                var totalSeconds = totalDur - totalMinutes * 60;
+
+                var currentMinutes = Math.floor(currentDur / 60);
+                var currentSeconds = currentDur - currentMinutes * 60;
+                
+                var suffixCurrent = currentSeconds < 10 ? "0" : "";
+                var suffixTotal = totalSeconds < 10 ? "0" : "";
+
+                document.getElementById("time").innerHTML = currentMinutes + ":" + suffixCurrent + Math.floor(currentSeconds) + " / " + totalMinutes + ":" + suffixTotal + Math.floor(totalSeconds);
+                
+                if (player.getPlayerState() == 1) {
+                    var percent = currentDur / totalDur;
+                    document.getElementById("scrubber").value = percent * 100;
+                }
+            }
+            
+            function changeLocation(location) {
+                player.seekTo(player.getDuration() * (location / 100));
+                playVideo();
+            }
+        </script>
+
+        <span class="time" id="time">0:00 / 0:00</span>
+
+        <input type="range" class="scrubber" id="scrubber" min=0 max=100 value=0 oninput="pauseVideo()" onchange="changeLocation(this.value)" />
+        <button onClick="playPause()" class="play-pause-button" id="play-pause-button"><img src="img/play.png" class="play-pause-image"/></button>
+        
+        <br />
+        
+        <!--<div class="slideout">
+            <span class="slideout-text">+</span>
+            <div class="slideout-inner">
+                <input type="text" id="video" class="video" placeholder="Search for music..." />
+                <button onClick="setVideo()" class="search-button"><img src="img/search.png" class="search-image" /></button>
+            </div>
+        </div>!-->
+        <input type="text" id="video" class="video" placeholder="Search for music..." />
+        <button onClick="setVideo()" class="search-button"><img src="img/search.png" class="search-image" /></button>
+    </body>
+</html>
